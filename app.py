@@ -11,8 +11,12 @@ INDEX_URL = BASE + "index.asp"
 API_SECRET = "potus"
 
 def fetch_votes(url=INDEX_URL):
-    resp = requests.get(url)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    resp = requests.get(url, headers=headers, timeout=10)
     resp.raise_for_status()
+    ...
     soup = BeautifulSoup(resp.text, "html.parser")
 
     table = soup.find("table")
