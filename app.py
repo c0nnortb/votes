@@ -16,7 +16,6 @@ def fetch_votes(url=INDEX_URL):
     }
     resp = requests.get(url, headers=headers, timeout=10)
     resp.raise_for_status()
-    ...
     soup = BeautifulSoup(resp.text, "html.parser")
 
     table = soup.find("table")
@@ -42,7 +41,11 @@ def get_votes():
 
     n = request.args.get("n", 5, type=int)
 
-    df = fetch_votes()
+    try:
+        df = fetch_votes()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
     if df.empty:
         return jsonify({"votes": [], "count": 0})
 
